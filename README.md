@@ -154,9 +154,9 @@ O backend está configurado para aceitar requisições do frontend no endereço 
 ## Como Contribuir
 
 1. Faça um fork deste repositório.
-2. Crie uma branch para a sua feature (`git checkout -b feature/nome-da-feature`).
-3. Commit suas alterações (`git commit -am 'Adicionando nova feature'`).
-4. Push para a branch (`git push origin feature/nome-da-feature`).
+2. Crie uma branch para a sua feature.
+3. Commit suas alterações.
+4. Push para a branch.
 5. Crie um pull request.
 
 ---
