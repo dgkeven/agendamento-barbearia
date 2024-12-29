@@ -161,8 +161,4 @@ O backend está configurado para aceitar requisições do frontend no endereço 
 
 ---
 
-## Licença
 
-Este projeto está sob a licença MIT. Veja o arquivo [LICENSE](LICENSE) para mais informações.
-
----
