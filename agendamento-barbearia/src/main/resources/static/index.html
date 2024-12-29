@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agendamento</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+<div class="agendamento-container">
+    <h1>Agendar Atendimento</h1>
+    <form id="agendamentoForm">
+        <label for="nome">Nome:</label>
+        <input type="text" id="nome" name="nome" placeholder="Digite seu nome" required>
+
+        <label for="telefone">Telefone:</label>
+        <input type="tel" id="telefone" name="telefone" placeholder="Digite seu telefone" required
+               pattern="[0-9]{2}[0-9]{4,5}[0-9]{4}" maxlength="15">
+
+        <label for="data">Data:</label>
+        <input type="date" id="data" name="data" required>
+
+        <label for="hora">Hora:</label>
+        <input type="time" id="hora" name="hora" required>
+
+        <div id="feedback" class="feedback"></div>
+
+        <button type="submit">Agendar</button>
+    </form>
+</div>
+
+<script src="script.js"></script>
+</body>
+
+</html>
