@@ -35,7 +35,7 @@ public class AgendamentoController {
 
     @GetMapping
     public ResponseEntity<List<Agendamento>> listarAgendamentos() {
-        List<Agendamento> agendamentos = agendamentoRepositorio.findAll(); // Utilizando o repositório
+        List<Agendamento> agendamentos = agendamentoRepositorio.findAll();
         return ResponseEntity.ok(agendamentos);
     }
 }
