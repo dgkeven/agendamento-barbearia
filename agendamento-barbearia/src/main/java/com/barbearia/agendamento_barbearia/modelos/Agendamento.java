@@ -1,11 +1,9 @@
 package com.barbearia.agendamento_barbearia.modelos;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
 @Entity
+@Table(name = "agendamento")
 public class Agendamento {
 
     @Id
