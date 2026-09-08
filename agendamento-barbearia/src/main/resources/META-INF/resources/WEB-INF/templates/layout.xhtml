@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html lang="pt-br"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="jakarta.faces.html"
+      xmlns:ui="jakarta.faces.facelets">
+
+<h:head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>
+        <ui:insert name="titulo">Barbearia</ui:insert>
+    </title>
+    <h:outputStylesheet library="css" name="barbearia.css"/>
+</h:head>
+
+<h:body styleClass="pagina">
+
+    <header class="cabecalho">
+        <h1 class="cabecalho__titulo">
+            <i class="pi pi-scissors" aria-hidden="true"></i>
+            Barbearia
+        </h1>
+        <p class="cabecalho__subtitulo">
+            <ui:insert name="subtitulo">Sistema de agendamento</ui:insert>
+        </p>
+    </header>
+
+    <main class="conteudo">
+        <ui:insert name="conteudo"/>
+    </main>
+
+    <footer class="rodape">
+        <span>Copyright &#169; 2025 Developer for KM</span>
+    </footer>
+
+</h:body>
+</html>

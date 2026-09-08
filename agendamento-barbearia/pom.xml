@@ -28,7 +28,22 @@
 	</scm>
 	<properties>
 		<java.version>17</java.version>
+		<!-- JoinFaces 5.4.x is the line aligned with Spring Boot 3.4.x -->
+		<joinfaces.version>5.4.13</joinfaces.version>
 	</properties>
+
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>org.joinfaces</groupId>
+				<artifactId>joinfaces-dependencies</artifactId>
+				<version>${joinfaces.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
+
 	<dependencies>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -45,21 +60,26 @@
 			<scope>runtime</scope>
 		</dependency>
 
+
 		<dependency>
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>
 			<optional>true</optional>
 		</dependency>
 
+		<!-- Front-end JSF (Jakarta Faces) + PrimeFaces.
+		     Traz Faces, PrimeFaces e o container CDI, tudo autoconfigurado
+		     para rodar no Tomcat embarcado do Spring Boot. -->
+		<dependency>
+			<groupId>org.joinfaces</groupId>
+			<artifactId>primefaces-spring-boot-starter</artifactId>
+			<version>${joinfaces.version}</version>
+		</dependency>
+
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>com.example</groupId>
-			<artifactId>agendamento-barbearia</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
 	</dependencies>
 

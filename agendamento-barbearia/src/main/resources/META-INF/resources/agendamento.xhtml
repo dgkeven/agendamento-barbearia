@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="jakarta.faces.html"
+                xmlns:f="jakarta.faces.core"
+                xmlns:ui="jakarta.faces.facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/templates/layout.xhtml">
+
+    <ui:define name="titulo">Agendamento | Barbearia</ui:define>
+    <ui:define name="subtitulo">Escolha o dia e o horario do seu atendimento</ui:define>
+
+    <ui:define name="conteudo">
+
+        <h:form id="form">
+
+            <p:growl id="mensagens" showDetail="true" life="6000" skipDetailIfEqualsSummary="true"/>
+
+            <div class="colunas">
+
+                <!-- ============ Formulario de agendamento ============ -->
+                <p:card styleClass="cartao">
+                    <f:facet name="title">Novo agendamento</f:facet>
+
+                    <div class="campo">
+                        <p:outputLabel for="nome" value="Nome"/>
+                        <p:inputText id="nome"
+                                     value="#{agendamentoBean.nome}"
+                                     required="true"
+                                     requiredMessage="Informe o nome do cliente."
+                                     maxlength="120"
+                                     placeholder="Digite seu nome"/>
+                        <p:message for="nome" display="text"/>
+                    </div>
+
+                    <div class="campo">
+                        <p:outputLabel for="telefone" value="Telefone"/>
+                        <!-- O "?" deixa o ultimo digito opcional, aceitando fixo (10) e celular (11).
+                             validateMask=false porque a checagem de mascara do PrimeFaces nao lida
+                             com o trecho opcional; a validacao real (10 ou 11 digitos) e feita no bean. -->
+                        <p:inputMask id="telefone"
+                                     value="#{agendamentoBean.telefone}"
+                                     mask="(99) 9999?9-9999"
+                                     validateMask="false"
+                                     required="true"
+                                     requiredMessage="Informe o telefone de contato."
+                                     placeholder="(11) 98765-4321"/>
+                        <p:message for="telefone" display="text"/>
+                    </div>
+
+                    <div class="campo">
+                        <p:outputLabel for="data" value="Data"/>
+                        <p:datePicker id="data"
+                                      value="#{agendamentoBean.data}"
+                                      mindate="#{agendamentoBean.dataMinima}"
+                                      pattern="dd/MM/yyyy"
+                                      showIcon="true"
+                                      required="true"
+                                      requiredMessage="Escolha a data do atendimento.">
+                            <p:ajax event="dateSelect"
+                                    listener="#{agendamentoBean.aoTrocarData}"
+                                    update="grupoHora"/>
+                        </p:datePicker>
+                        <p:message for="data" display="text"/>
+                    </div>
+
+                    <h:panelGroup id="grupoHora" layout="block" styleClass="campo">
+                        <p:outputLabel for="hora" value="Horario"/>
+                        <p:selectOneMenu id="hora"
+                                         value="#{agendamentoBean.hora}"
+                                         required="true"
+                                         requiredMessage="Escolha um horario disponivel."
+                                         disabled="#{agendamentoBean.horarioIndisponivel}">
+                            <f:selectItem itemLabel="Selecione o horario"
+                                          itemValue="#{null}"
+                                          noSelectionOption="true"/>
+                            <f:selectItems value="#{agendamentoBean.horariosDisponiveis}"/>
+                        </p:selectOneMenu>
+                        <p:message for="hora" display="text"/>
+
+                        <h:outputText styleClass="aviso"
+                                      rendered="#{agendamentoBean.horarioIndisponivel}"
+                                      value="Nenhum horario livre nesta data. Escolha outro dia."/>
+                    </h:panelGroup>
+
+                    <f:facet name="footer">
+                        <!-- resetValues limpa os valores locais dos inputs apos o postback,
+                             para que o formulario volte a refletir o estado do bean. -->
+                        <p:commandButton id="btnAgendar"
+                                         value="Agendar"
+                                         icon="pi pi-check"
+                                         action="#{agendamentoBean.salvar}"
+                                         update="@form"
+                                         resetValues="true"/>
+                        <p:commandButton id="btnLimpar"
+                                         value="Limpar"
+                                         icon="pi pi-eraser"
+                                         action="#{agendamentoBean.limpar}"
+                                         process="@this"
+                                         update="@form"
+                                         resetValues="true"
+                                         styleClass="ui-button-secondary"/>
+                    </f:facet>
+                </p:card>
+
+                <!-- ============ Agendamentos marcados ============ -->
+                <p:card styleClass="cartao">
+                    <f:facet name="title">Agendamentos marcados</f:facet>
+
+                    <p:dataTable id="tabela"
+                                 var="ag"
+                                 value="#{agendamentoBean.agendamentos}"
+                                 emptyMessage="Nenhum agendamento cadastrado."
+                                 paginator="true"
+                                 rows="8"
+                                 paginatorTemplate="{FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
+                                 rowKey="#{ag.id}">
+
+                        <p:column headerText="Cliente">
+                            <h:outputText value="#{ag.nome}"/>
+                        </p:column>
+
+                        <p:column headerText="Telefone">
+                            <h:outputText value="#{agendamentoBean.formatarTelefone(ag.telefone)}"/>
+                        </p:column>
+
+                        <p:column headerText="Data" style="width:7rem">
+                            <h:outputText value="#{agendamentoBean.formatarData(ag.data)}"/>
+                        </p:column>
+
+                        <p:column headerText="Hora" style="width:5rem">
+                            <h:outputText value="#{ag.hora}"/>
+                        </p:column>
+
+                        <p:column headerText="Acoes" style="width:6rem">
+                            <p:commandButton id="btnCancelar"
+                                             icon="pi pi-trash"
+                                             title="Cancelar agendamento"
+                                             action="#{agendamentoBean.cancelar(ag)}"
+                                             process="@this"
+                                             update="@form"
+                                             styleClass="ui-button-danger ui-button-flat">
+                                <p:confirm header="Confirmar cancelamento"
+                                           message="Cancelar o agendamento de #{ag.nome}?"
+                                           icon="pi pi-exclamation-triangle"/>
+                            </p:commandButton>
+                        </p:column>
+                    </p:dataTable>
+                </p:card>
+
+            </div>
+        </h:form>
+
+        <!-- Os botoes do confirmDialog precisam de um h:form na hierarquia. -->
+        <h:form id="formConfirmacao">
+            <p:confirmDialog global="true" showEffect="fade" hideEffect="fade" responsive="true">
+                <p:commandButton value="Sim" type="button"
+                                 styleClass="ui-confirmdialog-yes" icon="pi pi-check"/>
+                <p:commandButton value="Nao" type="button"
+                                 styleClass="ui-confirmdialog-no ui-button-secondary" icon="pi pi-times"/>
+            </p:confirmDialog>
+        </h:form>
+
+    </ui:define>
+</ui:composition>

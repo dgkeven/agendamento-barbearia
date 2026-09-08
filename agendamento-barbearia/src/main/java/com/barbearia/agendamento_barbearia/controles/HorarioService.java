@@ -8,27 +8,33 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.List;
 
 @Service
 public class HorarioService {
+
+    /**
+     * Grade fixa de atendimento da barbearia. Fonte unica de verdade,
+     * usada tanto na geracao dos horarios quanto na tela de agendamento.
+     */
+    public static final List<LocalTime> HORARIOS_PADRAO = List.of(
+            LocalTime.of(8, 0),
+            LocalTime.of(9, 0),
+            LocalTime.of(10, 0),
+            LocalTime.of(11, 0),
+            LocalTime.of(14, 0),
+            LocalTime.of(15, 0),
+            LocalTime.of(16, 0),
+            LocalTime.of(17, 0),
+            LocalTime.of(18, 0),
+            LocalTime.of(19, 0)
+    );
 
     @Autowired
     private HorarioRepositorio horarioRepositorio;
 
     public void insereHorarios2025() {
-        LocalTime[] horarios = {
-                LocalTime.of(8, 0),
-                LocalTime.of(9, 0),
-                LocalTime.of(10, 0),
-                LocalTime.of(11, 0),
-                LocalTime.of(14, 0),
-                LocalTime.of(15, 0),
-                LocalTime.of(16, 0),
-                LocalTime.of(17, 0),
-                LocalTime.of(18, 0),
-                LocalTime.of(19, 0)
-
-        };
+        List<LocalTime> horarios = HORARIOS_PADRAO;
 
         for (int i = 0; i < 365; i++) {
             LocalDate data = LocalDate.of(2025, 1, 1).plusDays(i);

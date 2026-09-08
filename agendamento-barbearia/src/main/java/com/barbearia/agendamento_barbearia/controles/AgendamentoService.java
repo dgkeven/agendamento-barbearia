@@ -22,4 +22,14 @@ public class AgendamentoService {
 
         return "Agendamento criado com sucesso!";
     }
+
+    public String cancelarAgendamento(Long id) {
+        if (id == null || !agendamentoRepositorio.existsById(id)) {
+            throw new IllegalArgumentException("Erro: Agendamento nao encontrado.");
+        }
+
+        agendamentoRepositorio.deleteById(id);
+
+        return "Agendamento cancelado com sucesso!";
+    }
 }
